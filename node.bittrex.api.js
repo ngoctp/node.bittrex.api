@@ -206,6 +206,8 @@ var NodeBittrexApi = function(options) {
           if (diff > 60 * 1000) {
             ((opts.verbose) ? console.log('Websocket Watch Dog: Websocket has not received communication for over 1 minute. Forcing reconnection. Ruff!') : '');
             connectws(callback, true);
+            clearInterval(websocketWatchDog);
+            websocketWatchDog = null;
           } else {
             ((opts.verbose) ? console.log('Websocket Watch Dog: Last message received '+diff+'ms ago. Ruff!') : '');
           }
@@ -217,6 +219,7 @@ var NodeBittrexApi = function(options) {
       if (error) {
         console.error('Cloudscraper error occurred');
         console.error(error);
+        throw error;
         return;
       }
 
